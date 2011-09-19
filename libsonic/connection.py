@@ -20,7 +20,9 @@ from urllib import urlencode
 from errors import *
 from pprint import pprint
 from cStringIO import StringIO
-import json, urllib2
+
+import json
+import urllib2
 
 API_VERSION = '1.6.0'
 
