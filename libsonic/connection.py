@@ -103,11 +103,11 @@ class Connection(object):
         methodName = 'ping'
         viewName = '%s.view' % methodName
 
-        req = self._getRequest(viewName)
         try:
-            res = self._doInfoReq(req)
+            req = self._getRequest(viewName)
         except:
             return False
+
         if res['status'] == 'ok':
             return True
         elif res['status'] == 'failed':
@@ -134,9 +134,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getMusicFolders(self):
         """
@@ -157,9 +156,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getNowPlaying(self):
         """
@@ -197,8 +195,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
+        self._checkStatus(req)
+
         return res
 
     def getIndexes(self, musicFolderId=None, ifModifiedSince=0):
@@ -237,9 +235,8 @@ class Connection(object):
             'ifModifiedSince': self._ts2milli(ifModifiedSince)})
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getMusicDirectory(self, mid):
         """
@@ -300,9 +297,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName, {'id': mid})
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def search(self, artist=None, album=None, title=None, any=None,
             count=20, offset=0, newerThan=None):
@@ -333,9 +329,8 @@ class Connection(object):
             'newerThan': self._ts2milli(newerThan)})
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def search2(self, query, artistCount=20, artistOffset=0, albumCount=20,
             albumOffset=0, songCount=20, songOffset=0):
@@ -394,9 +389,8 @@ class Connection(object):
             'songOffset': songOffset}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getPlaylists(self):
         """
@@ -418,9 +412,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getPlaylist(self, pid):
         """
@@ -458,9 +451,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName, {'id': pid})
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def createPlaylist(self, playlistId=None, name=None, songIds=[]):
         """
@@ -493,9 +485,8 @@ class Connection(object):
         q = self._getQueryDict({'playlistId': playlistId, 'name': name})
 
         req = self._getRequestWithList(viewName, 'songId', songIds, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def deletePlaylist(self, pid):
         """
@@ -512,9 +503,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName, {'id': pid})
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def download(self, sid):
         """
@@ -609,9 +599,8 @@ class Connection(object):
         q = {'id': sid, 'submission': submission}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def changePassword(self, username, password):
         """
@@ -640,9 +629,8 @@ class Connection(object):
         q = {'username': username, 'password': password}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getUser(self, username):
         """
@@ -678,9 +666,8 @@ class Connection(object):
         q = {'username': username}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def createUser(self, username, password, ldapAuthenticated=False,
             adminRole=False, settingsRole=True, streamRole=True,
@@ -716,9 +703,8 @@ class Connection(object):
             'podcastRole': podcastRole}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def deleteUser(self, username):
         """
@@ -741,9 +727,8 @@ class Connection(object):
         q = {'username': username}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getChatMessages(self, since=1):
         """
@@ -770,9 +755,8 @@ class Connection(object):
         q = {'since': self._ts2milli(since)}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def addChatMessage(self, message):
         """
@@ -794,9 +778,8 @@ class Connection(object):
         q = {'message': message}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getAlbumList(self, ltype, size=10, offset=0):
         """
@@ -834,9 +817,8 @@ class Connection(object):
         q = {'type': ltype, 'size': size, 'offset': offset}
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getRandomSongs(self, size=10, genre=None, fromYear=None,
             toYear=None, musicFolderId=None):
@@ -894,9 +876,8 @@ class Connection(object):
             'musicFolderId': musicFolderId})
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getLyrics(self, artist=None, title=None):
         """
@@ -923,9 +904,8 @@ class Connection(object):
         q = self._getQueryDict({'artist': artist, 'title': title})
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def jukeboxControl(self, action, index=None, sids=[], gain=None):
         """
@@ -963,9 +943,8 @@ class Connection(object):
             req = self._getRequestWithList(viewName, 'id', sids, q)
         else:
             req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getPodcasts(self):
         """
@@ -1021,9 +1000,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def getShares(self):
         """
@@ -1058,9 +1036,8 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def createShare(self, shids=[], description=None, expires=None):
         """
@@ -1089,9 +1066,8 @@ class Connection(object):
         q = self._getQueryDict({'description': description,
             'expires': self._ts2milli(expires)})
         req = self._getRequestWithList(viewName, 'id', shids, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def updateShare(self, shid, description=None, expires=None):
         """
@@ -1111,9 +1087,8 @@ class Connection(object):
             expires: self._ts2milli(expires)})
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def deleteShare(self, shid):
         """
@@ -1131,9 +1106,8 @@ class Connection(object):
         q = self._getQueryDict({'id': shid})
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     def setRating(self, id, rating):
         """
@@ -1162,9 +1136,8 @@ class Connection(object):
         q = self._getQueryDict({'id': id, 'rating': rating})
 
         req = self._getRequest(viewName, q)
-        res = self._doInfoReq(req)
-        self._checkStatus(res)
-        return res
+        self._checkStatus(req)
+        return req
 
     # Private internal methods
     def _getOpener(self, username, passwd):
@@ -1189,8 +1162,12 @@ class Connection(object):
         qstring.update(query)
         url = '%s:%d/%s/%s' % (self._baseUrl, self._port, self._serverPath,
             viewName)
-        req = urllib2.Request(url, urlencode(qstring))
-        return req
+        req = self._doInfoReq(urllib2.Request(url, urlencode(qstring)))
+
+        if isinstance(req, dict):
+            return req
+        else:
+            return req
 
     def _getRequestWithList(self, viewName, listName, alist, query={}):
         """
@@ -1206,7 +1183,7 @@ class Connection(object):
         for i in alist:
             data.write('&%s' % urlencode({listName: i}))
         print data.getvalue()
-        req = urllib2.Request(url, data.getvalue())
+        req = self._doInfoReq(urllib2.Request(url, data.getvalue()))
         return req
 
     def _doInfoReq(self, req):
