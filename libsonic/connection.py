@@ -521,7 +521,7 @@ class Connection(object):
         viewName = '%s.view' % methodName
 
         req = self._getRequest(viewName, {'id': sid})
-        res = self._doBinReq(req)
+        res = self._doReq(req)
         if isinstance(res, dict):
             self._checkStatus(res)
         return res
@@ -548,7 +548,7 @@ class Connection(object):
         q = {'id': sid, 'maxBitRate': maxBitRate}
 
         req = self._getRequest(viewName, q)
-        res = self._doBinReq(req)
+        res = self._doReq(req)
         if isinstance(res, dict):
             self._checkStatus(res)
         return res
@@ -571,7 +571,7 @@ class Connection(object):
         q = self._getQueryDict({'id': aid, 'size': size})
 
         req = self._getRequest(viewName, q)
-        res = self._doBinReq(req)
+        res = self._doReq(req)
         if isinstance(res, dict):
             self._checkStatus(res)
         return res
@@ -1162,7 +1162,7 @@ class Connection(object):
         qstring.update(query)
         url = '%s:%d/%s/%s' % (self._baseUrl, self._port, self._serverPath,
             viewName)
-        req = self._doInfoReq(urllib2.Request(url, urlencode(qstring)))
+        req = self._doReq(urllib2.Request(url, urlencode(qstring)))
 
         if isinstance(req, dict):
             return req
@@ -1183,21 +1183,16 @@ class Connection(object):
         for i in alist:
             data.write('&%s' % urlencode({listName: i}))
         print data.getvalue()
-        req = self._doInfoReq(urllib2.Request(url, data.getvalue()))
+        req = self._doReq(urllib2.Request(url, data.getvalue()))
         return req
 
-    def _doInfoReq(self, req):
-        # Returns a parsed dictionary version of the result
-        res = self._opener.open(req)
-        dres = json.loads(res.read())
-        return dres['subsonic-response']
-
-    def _doBinReq(self, req):
+    def _doReq(self, req):
         res = self._opener.open(req)
         contType = res.info().getheader('Content-Type')
         if contType:
             if contType.startswith('text/html') or \
                     contType.startswith('application/json'):
+                # Returns a parsed dictionary version of the result
                 dres = json.loads(res.read())
                 return dres['subsonic-response']
         return res
